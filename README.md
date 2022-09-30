@@ -44,14 +44,10 @@ srun --nodelist={node_name} -t 60:00 --pty bash
 #SBATCH -D /home/eecs/yefan0726                      # slurm will cd to this directory before running the script
 
 # The following are bash commands
-pwd
-hostname
-date
 echo starting job...
 source ~/.bashrc
-conda activate sparse_learn
-export PYTHONUNBUFFERED=1
-cd ~/rigl-reproducibility
+conda activate your_env
+cd ~/your_folder
 # start your experiments
 python main.py 
 ```

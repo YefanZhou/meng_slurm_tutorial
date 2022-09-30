@@ -1,6 +1,5 @@
 #!/bin/bash
 #SBATCH -p rise # partition (queue)
-##SBATCH --exclude=havoc,r4,r16,atlas
 #SBATCH --nodelist=bombe
 #SBATCH -n 1 # number of tasks (i.e. processes)
 #SBATCH --cpus-per-task=6 # number of cores per task

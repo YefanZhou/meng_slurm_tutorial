@@ -7,12 +7,12 @@ parser.add_argument("--train", action="store_true",default=False, help="whether 
 parser.add_argument("--prune", action="store_true",default=False, help="whether to generate ww scripts for pruned models")
 parser.add_argument("--finetune", action="store_true", default=False, help="whether to generate ww scripts for finetuned models")
 parser.add_argument("--base_folder",  default='work', help="put your slurm user name here")
-parser.add_argument("--username", default='yefan0726', help="put your slurm user name here")
+parser.add_argument("--username", default='', help="put your slurm user name here")
 parser.add_argument("--version",  type=int, default=1, help="version of code")
 
 args = parser.parse_args()
 
-TARGET_NODES = ['ace', 'ace', 'ace', 'ace']
+TARGET_NODES = ['node_name', 'node_name', 'node_name', 'node_name']
 
 DATASET='cifar10'
 FULL_MODEL_SEEDS=[2, 3]
@@ -82,7 +82,7 @@ for arch, depth, full_model_seed, sample_frac, width in full_model_grid:
     slurm_cmd += f'cd /home/eecs/{args.username}/ww_prune/cv/rethinking-network-pruning\n'
     if RANDOM_LABEL:
         slurm_cmd += f'mkdir -p /{args.base_folder}/{args.username}/data/cv/{DATASET}/random_labels/\n'
-        slurm_cmd += f'scp -r yefan0726@watson.millennium.berkeley.edu:/{args.base_folder}/{args.username}/{args.base_folder}/cv/{DATASET}/random_labels/{NOISE_TYPE}_label_prob{LABEL_CORRUPT_PROB}_seed{full_model_seed}.pkl /{args.base_folder}/{args.username}/data/cv/{DATASET}/random_labels\n'
+        slurm_cmd += f'scp -r username@watson.millennium.berkeley.edu:/{args.base_folder}/{args.username}/{args.base_folder}/cv/{DATASET}/random_labels/{NOISE_TYPE}_label_prob{LABEL_CORRUPT_PROB}_seed{full_model_seed}.pkl /{args.base_folder}/{args.username}/data/cv/{DATASET}/random_labels\n'
     jobs_path = open(f'jobs/scripts/{slurm_file}', 'w+')
     jobs_path.write('{:s} \n'.format(slurm_cmd))
 
@@ -93,9 +93,9 @@ for arch, depth, full_model_seed, sample_frac, width in full_model_grid:
     cmd += f'--depth {depth} '
     cmd += f'--manualSeed {full_model_seed} '
     if LABEL_CORRUPT_PROB and RANDOM_LABEL:
-        cmd += f'--save_dir /{args.base_folder}/yefan0726/checkpoints/cv/{DATASET}/pretrain/{arch}{depth}_w{width}_seed{full_model_seed}_frac{sample_frac}_{NOISE_TYPE}_corrprob{LABEL_CORRUPT_PROB}_randomLabel{RANDOM_LABEL}_epochs{TOTAL_EPOCHS}_sche{SCHEDULE[0]}{SCHEDULE[1]} '
+        cmd += f'--save_dir /{args.base_folder}/username/checkpoints/cv/{DATASET}/pretrain/{arch}{depth}_w{width}_seed{full_model_seed}_frac{sample_frac}_{NOISE_TYPE}_corrprob{LABEL_CORRUPT_PROB}_randomLabel{RANDOM_LABEL}_epochs{TOTAL_EPOCHS}_sche{SCHEDULE[0]}{SCHEDULE[1]} '
     else:
-        cmd += f'--save_dir /{args.base_folder}/yefan0726/checkpoints/cv/{DATASET}/pretrain/{arch}{depth}_seed{full_model_seed}_frac{sample_frac} '
+        cmd += f'--save_dir /{args.base_folder}/username/checkpoints/cv/{DATASET}/pretrain/{arch}{depth}_seed{full_model_seed}_frac{sample_frac} '
     
     cmd += f'--data-path /{args.base_folder}/{args.username}/data/cv/{DATASET} '
     cmd += f'--data-subsample-frac {sample_frac} '
